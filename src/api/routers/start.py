@@ -14,7 +14,7 @@ async def command_start_router(message: types.Message) -> None:
     keyboard = types.ReplyKeyboardMarkup(
         keyboard=kb,
         resize_keyboard=True,
-        input_field_placeholder="Оберіть дію"  # todo переписать текст placeholder
+        input_field_placeholder="Оберіть запропоновану дію"
     )
 
     await message.answer(
