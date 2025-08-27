@@ -1,12 +1,13 @@
 from aiogram import Router, F, types
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
+from src.constants import admin_text, create_offer_text, view_offers_text, select_suggested_action_text
 from src.services.user import UserService
 
 
 admin_router = Router(name="admin")
 
-@admin_router.message(F.text.lower() == "адмін")
+@admin_router.message(F.text.lower() == admin_text.lower())
 async def admin(
         message: types.Message,
 ):
@@ -17,13 +18,13 @@ async def admin(
         await user_service.create_user(telegram_user_id=message.from_user.id)
 
     kb = [
-        [types.KeyboardButton(text="створитиофер"),
-         types.KeyboardButton(text="Переглянути офери")] # todo просмотреть уже свои созданные офферы
+        [types.KeyboardButton(text=create_offer_text),
+         types.KeyboardButton(text=view_offers_text)]
     ]
     keyboard = types.ReplyKeyboardMarkup(
         keyboard=kb,
         resize_keyboard=True,
-        input_field_placeholder="Оберіть запропоновану дію"
+        input_field_placeholder=select_suggested_action_text
     )
 
     await message.answer(
@@ -34,7 +35,7 @@ async def admin(
     )
 
 
-@admin_router.message(F.text.lower() == "створитиофер")
+@admin_router.message(F.text.lower() == create_offer_text.lower())
 async def create_offer(message: types.Message):
     builder = ReplyKeyboardBuilder()
     builder.row(
