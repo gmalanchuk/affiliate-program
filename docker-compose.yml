@@ -1,0 +1,10 @@
+services:
+  affiliate:
+    build: .
+    restart: always
+    volumes:
+      - ./:/affiliate
+    command: >
+      sh -c "python -m src.main"
+    env_file:
+      - .env
