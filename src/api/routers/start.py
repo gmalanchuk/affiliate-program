@@ -18,9 +18,8 @@ async def command_start_router(message: types.Message) -> None:
     )
 
     await message.answer(
-        # todo написать приветственное сообщение
         text=(
-            'Привіт! Я бот для керування трафіком.\n'
+            'Привіт! Я бот для керування трафіком.\n'  # todo написать приветственное сообщение
         ),
         reply_markup=keyboard
     )
