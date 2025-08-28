@@ -9,9 +9,8 @@ admin_router = Router(name="admin")
 @admin_router.message(F.text.lower() == admin_text.lower())
 async def admin_command(
         message: types.Message,
+        user_service: UserService = UserService()
 ):
-    user_service = UserService()  # todo вынести в DI паттерн
-
     user = await user_service.get_user(telegram_user_id=message.from_user.id)
     if not user:
         await user_service.create_user(telegram_user_id=message.from_user.id)
