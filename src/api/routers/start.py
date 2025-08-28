@@ -1,16 +1,18 @@
 from aiogram.filters import CommandStart
-from aiogram import Router, types
+from aiogram import Router, types, F
 
-from src.constants import buyer_text, admin_text, select_suggested_action_text
+from src.constants import buyer_text, admin_text, select_suggested_action_text, main_menu_text
 
 start_router = Router(name="start")
 
 
 @start_router.message(CommandStart())
-async def command_start_router(message: types.Message) -> None:
+async def start_command(message: types.Message) -> None:
     kb = [
-        [types.KeyboardButton(text=admin_text),
-         types.KeyboardButton(text=buyer_text)]
+        [
+            types.KeyboardButton(text=admin_text),
+            types.KeyboardButton(text=buyer_text)
+        ]
     ]
     keyboard = types.ReplyKeyboardMarkup(
         keyboard=kb,
@@ -24,3 +26,8 @@ async def command_start_router(message: types.Message) -> None:
         ),
         reply_markup=keyboard
     )
+
+
+@start_router.message(F.text.lower() == main_menu_text.lower())
+async def main_menu_command(message: types.Message) -> None:
+    return await start_command(message)

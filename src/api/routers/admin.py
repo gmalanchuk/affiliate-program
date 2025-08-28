@@ -1,0 +1,42 @@
+from aiogram import Router, F, types
+
+from src.constants import admin_text, create_offer_text, view_offers_text, select_suggested_action_text, main_menu_text
+from src.services.user import UserService
+
+admin_router = Router(name="admin")
+
+
+@admin_router.message(F.text.lower() == admin_text.lower())
+async def admin_command(
+        message: types.Message,
+):
+    user_service = UserService()  # todo вынести в DI паттерн
+
+    user = await user_service.get_user(telegram_user_id=message.from_user.id)
+    if not user:
+        await user_service.create_user(telegram_user_id=message.from_user.id)
+
+    kb = [
+        [
+            types.KeyboardButton(text=create_offer_text),
+            types.KeyboardButton(text=view_offers_text)
+        ],
+        [
+            types.KeyboardButton(text=main_menu_text)
+        ]
+    ]
+    keyboard = types.ReplyKeyboardMarkup(
+        keyboard=kb,
+        resize_keyboard=True,
+        input_field_placeholder=select_suggested_action_text
+    )
+
+    await message.answer(
+        text='Вибери нижче, ти хочеш передивится вже створені тобою офери чи створити новий',  # todo переписать
+        reply_markup=keyboard,
+    )
+
+
+@admin_router.message(F.text.lower() == create_offer_text.lower())
+async def create_offer_command(message: types.Message):
+    await message.reply("create offer")

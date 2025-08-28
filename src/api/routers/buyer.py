@@ -6,5 +6,5 @@ buyer_router = Router(name="buyer")
 
 
 @buyer_router.message(F.text.lower() == buyer_text.lower())
-async def buyer(message: types.Message):
+async def buyer_command(message: types.Message):
     await message.reply("buyer")
